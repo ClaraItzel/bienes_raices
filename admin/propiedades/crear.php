@@ -1,11 +1,13 @@
 <?php 
-require '../../includes/funciones.php';
+require '../../includes/app.php';
+use App\Propiedad;
+$propiedad= new Propiedad;
+debuggeando($propiedad);
 $auth=estaAutenticado();
 if(!$auth){
     header('Location: /bienes_raices');
 }
-//conexion a bd
-require '../../includes/config/database.php';
+
 $db=conectarDB();
 
 //consulta

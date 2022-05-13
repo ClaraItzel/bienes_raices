@@ -33,10 +33,10 @@ $auth= $_SESSION['login'] ?? false;
                    <div class="derecha">
                        <img src="/bienes_raices/build/img/dark-mode.svg" alt="" class="darkmode">
                        <nav class="navegacion">
-                       <a href="nosotros.php">Nosotros</a>
-                       <a href="anuncios.php">Anuncios</a>
-                       <a href="blog.php">Blog</a>
-                       <a href="contacto.php">Contacto</a>
+                       <a href="/bienes_raices/nosotros.php">Nosotros</a>
+                       <a href="/bienes_raices/anuncios.php">Anuncios</a>
+                       <a href="/bienes_raices/blog.php">Blog</a>
+                       <a href="/bienes_raices/contacto.php">Contacto</a>
                     <?php if($auth): ?>
                         <a href="/bienes_raices/cerrarSesion.php">Log Out</a>
                     <?php endif; ?>

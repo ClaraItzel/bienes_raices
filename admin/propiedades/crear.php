@@ -1,12 +1,8 @@
 <?php 
 require '../../includes/app.php';
 use App\Propiedad;
-$propiedad= new Propiedad;
-debuggeando($propiedad);
-$auth=estaAutenticado();
-if(!$auth){
-    header('Location: /bienes_raices');
-}
+
+estaAutenticado();
 
 $db=conectarDB();
 
@@ -25,21 +21,12 @@ $estacionamiento ='';
 //Arreglo con msj de error
 $errores=[];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-/*     echo"<pre>";
-var_dump($_POST);
-echo"</pre>";*/
-    echo"<pre>";
-var_dump($_FILES);
-echo"</pre>";
+    $propiedad= new Propiedad($_POST);
+    $propiedad->guardar();
+    debuggeando($propiedad);
 
-$titulo =mysqli_real_escape_string($db,$_POST['titulo']);
-$precio =mysqli_real_escape_string($db,$_POST['precio']);
-$descripcion =mysqli_real_escape_string($db,$_POST['descripcion']);
-$habitaciones =mysqli_real_escape_string($db,$_POST['habitaciones']);
-$wc =mysqli_real_escape_string($db,$_POST['wc']);
-$estacionamiento =mysqli_real_escape_string($db,$_POST['estacionamiento']);
-$creado= date('Y/m/d');
+
+
 
 //Asignar files a una variable
 $img=$_FILES["imagen"];
@@ -109,10 +96,7 @@ if (empty($errores)) {
         $vendedor=mysqli_real_escape_string($db,$_POST['vendedor']);
     }
     
-    //insertar en la bd
-    $query ="INSERT INTO propiedades (titulo, precio,imagen,descripcion,habitaciones,wc,estacionamientos,creado,vendedorId)
-    Values('$titulo', '$precio','$nombreImagen','$descripcion','$habitaciones','$wc','$estacionamiento','$creado','$vendedor')";
-    echo $query;
+    //echo $query;
     $resultado= mysqli_query($db,$query);
     if ($resultado) {
        //Se redirecciona al usuario
@@ -161,7 +145,7 @@ incluirTemplate('header');
             </fieldset>
             <fieldset>
                 <legend>Vendedor</legend>
-                <select name="vendedor">
+                <select name="vendedorId">
                     <option  value="0" selected disabled> --- Selecciona un vendedor ---</option>
                     <?php while($row= mysqli_fetch_assoc($resConsulta)): ?>
                          <?php 

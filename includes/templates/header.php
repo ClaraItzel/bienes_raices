@@ -22,7 +22,7 @@ $auth= $_SESSION['login'] ?? false;
         <div class="contenedor contenido_header">
             <div class="barra">
                 <div class="barra__flex">
-                    <a class="barra__img" href="index.php">
+                    <a class="barra__img" href="/bienes_raices/index.php">
                        <img src="/bienes_raices/build/img/logo.svg"   alt="logotipo de bienes raíces">
                    </a>
                    <div class="mobile__img">

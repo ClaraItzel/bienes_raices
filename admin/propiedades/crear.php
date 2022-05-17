@@ -40,13 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        
     $errores= $propiedad->validar();
 
-
-
-
-
-
-
-
 if (empty($errores)) {
     
    

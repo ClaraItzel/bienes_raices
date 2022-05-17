@@ -29,7 +29,7 @@ $precio =$propiedad['precio'];
 $descripcion =$propiedad['descripcion'];
 $habitaciones =$propiedad['habitaciones'];
 $wc =$propiedad['wc'];
-$estacionamiento =$propiedad['estacionamientos'];
+$estacionamiento =$propiedad['estacionamiento'];
 $vendedor=$propiedad['vendedorId'];
 $imgPropiedad=$propiedad['imagen'];
 
@@ -127,7 +127,7 @@ if (empty($errores)) {
     //insertar en la bd
     $query ="UPDATE propiedades SET titulo='${titulo}',
             precio='${precio}', imagen='${nombreImagen}', descripcion='${descripcion}',
-            habitaciones=${habitaciones},wc=${wc},estacionamientos=${estacionamiento},
+            habitaciones=${habitaciones},wc=${wc},estacionamiento=${estacionamiento},
             vendedorId=${vendedor} where id=${id}";
    echo $query;
 

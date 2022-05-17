@@ -1,9 +1,8 @@
 <?php 
 require '../../includes/app.php';
 use App\Propiedad;
-
+use Intervention\Image\ImageManagerStatic as Imge;
 estaAutenticado();
-
 $db=conectarDB();
 
 //consulta
@@ -19,91 +18,50 @@ $wc ='';
 $estacionamiento ='';
 
 //Arreglo con msj de error
-$errores=[];
+$errores=Propiedad::getErrores();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $propiedad= new Propiedad($_POST);
-    $propiedad->guardar();
-    debuggeando($propiedad);
+    //subiendo archivos
 
-
-
-
-//Asignar files a una variable
-$img=$_FILES["imagen"];
-
-if (!isset($_POST['vendedor'])) {
-    $vendedor=0;
-}else{
-    $vendedor=mysqli_real_escape_string($db,$_POST['vendedor']);
-}
-
-if (!$img["name"]) {
-    $errores[]='La imagen es obligatoria';
-}
-//Validando por tamaño
-$medida= 3000 * 100;
-if ($img["size"]>$medida || $img['error']) {
-    $errores[]='La imagen es muy pesada';
-}
  
-if(!$titulo){
-    $errores[]= "Debes añadir un titulo";
-}
-if (!$precio) {
-    $errores[]= 'El precio es obligatorio';
-}
-if (strlen($descripcion) <50) {
-    $errores[]='La descripción es obligatoria y debe tener almenos 50 caracteres';
-}
-if (!$habitaciones) {
-    $errores[]='El numero de habitaciones es obligatorio';
-}
-if (!$wc) {
-    $errores[]='El numero de baños es obligatorio';
-}
-if (!$habitaciones) {
-    $errores[]='El numero de lugares de estacionamiento es obligatorio';
-}
-if ($vendedor=0) {
-    $errores[]='Selecciona un vendedor';
-}
-/*  echo"<pre>";
-var_dump($errores);
-echo"</pre>"; */
+    //Generar un nombre unico a las imagenes
+    $nombreImagen= md5( uniqid( rand(), true )).'.jpg';
+      //Asignar files a una variable
+        $img=$_FILES["imagen"];
+
+
+        //Realiza un resize a la imagen con intervetion
+        if ($img['tmp_name']) {
+        $imagen= Imge::make($img['tmp_name'])->fit(800,600);
+        //Subida de archivos a la BD setteando la img
+        $propiedad->setImagen($nombreImagen);
+        }
+       
+    $errores= $propiedad->validar();
+
+
+
+
+
 
 
 
 if (empty($errores)) {
-//subiendo archivos
-
-    /*Primero creamos una carpeta */
-    $carpertaImg='../../imagenes/';
-    if(!is_dir($carpertaImg)){
-       mkdir($carpertaImg); 
-    }
-    //Generar un nombre unico a las imagenes
-    $nombreImagen= md5( uniqid( rand(), true )).'.jpg';
-    //subiendo la imagen
-
-    move_uploaded_file($img["tmp_name"],$carpertaImg.$nombreImagen);
-
     
+   
+       /*Primero creamos una carpeta */
 
-
-    if (!isset($_POST['vendedor'])) {
-        $vendedor=0;
-    }else{
-        $vendedor=mysqli_real_escape_string($db,$_POST['vendedor']);
-    }
-    
-    //echo $query;
-    $resultado= mysqli_query($db,$query);
-    if ($resultado) {
-       //Se redirecciona al usuario
-        header('location: /bienes_raices/admin?msj=registadoCorrectamente&registrado=1');
-    }
-}else{
-    echo 'no se inserto nada';
+       if(!is_dir(CARPETA_IMAGENES)){
+          mkdir(CARPETA_IMAGENES); 
+       }
+   //Guarda la imagen en el servidor
+   $imagen->save( CARPETA_IMAGENES .$nombreImagen);
+       //GUarda en bd
+  $resultado= $propiedad->guardar(); 
+  if ($resultado) {
+      header('Location:/bienes_raices/admin?registrado=1');
+  } 
 }
 
 

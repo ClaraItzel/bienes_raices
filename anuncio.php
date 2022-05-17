@@ -42,7 +42,7 @@ if ($numRows==0) {
                         <source srcset="build/img/coche.jpg" type="image/jpg">
                         <img src="build/img/coche.jpg" alt="Cantidad de estacionamientos" loading="lazy">
                     </picture>
-                    <p><?php echo $propiedad['estacionamientos']; ?></p>
+                    <p><?php echo $propiedad['estacionamiento']; ?></p>
                 </li>
               
                 <li>

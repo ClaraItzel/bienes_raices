@@ -23,3 +23,8 @@ function debuggeando($param){
     echo'</pre>';
     exit;
 }
+//Escapa / Sanitiza el HTML
+function s($html) : string{
+    $s= htmlspecialchars($html);
+    return $s; 
+}

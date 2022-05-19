@@ -30,7 +30,7 @@ class Propiedad{
         $this->wc = $args['wc'] ?? '';
         $this->estacionamiento = $args['estacionamiento'] ?? '';
         $this->creado = date('Y/m/d');
-        $this->vendedorId = $args['vendedorId'] ?? '';
+        $this->vendedorId = $args['vendedorId'] ?? 0;
     }
      //Definiendo conexion a la bd
      public static function setDb($database){
@@ -78,6 +78,15 @@ class Propiedad{
 
    //Subiendo imagenes con la libreria intervetion Image
    public function setImagen($imagen){
+       //Eliminando imagen anterior
+       if ($this->id) {
+           //Comprobar si existe el archivo
+           $existeArch= file_exists(CARPETA_IMAGENES . $this->imagen);
+           if ($existeArch) {
+             
+               unlink(CARPETA_IMAGENES . $this->imagen);
+           }
+       }
        //Asignar al atributo el nombre de la imagen
        if (isset($imagen)) {
            $this->imagen= $imagen;
@@ -119,7 +128,12 @@ class Propiedad{
     $result= self::consultarSQL($query);
     return $result;
    }
-
+   //Buscando propiedad por si ID o registro
+   public static function find($id){
+    $query="SELECT * FROM propiedades WHERE id=".$id;
+    $result= self::consultarSQL($query);
+    return array_shift($result);
+   }
    public static function consultarSQL($query){
     //Consultando bd
     $resultado= self::$db->query($query);
@@ -143,6 +157,14 @@ class Propiedad{
        
     }
         return $obj;
+    }
+    //SICRONIZA EL OBJETO CON LOS CAMBIOS REALIZADOS POR EL USUARIO
+    public function sincronizar($args=[]){
+        foreach($args as $key=>$value){
+            if (property_exists($this, $key) && !is_null($value)) {
+                $this->$key= $value;
+            }
+        }
     }
 }
 ?> 

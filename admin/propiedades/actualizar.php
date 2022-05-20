@@ -49,23 +49,13 @@ $propiedad->setImagen($nombreImagen);
 
 
 
-
 if (empty($errores)) {
+    //Almacenar imagen
+    $imagen->save(CARPETA_IMAGENES.$nombreImagen);
 
-
-    exit;
     //insertar en la bd
-    $query ="UPDATE propiedades SET titulo='${titulo}',
-            precio='${precio}', imagen='${nombreImagen}', descripcion='${descripcion}',
-            habitaciones=${habitaciones},wc=${wc},estacionamiento=${estacionamiento},
-            vendedorId=${vendedor} where id=${id}";
-   echo $query;
+    $resultado=$propiedad->guardar();
 
-    $resultado= mysqli_query($db,$query);
-    if ($resultado) {
-       //Se redirecciona al usuario
-        header('location: /bienes_raices/admin?msj=registadoCorrectamente&registrado=2');
-    }
 }else{
     echo 'no se inserto nada';
 }

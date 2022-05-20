@@ -37,6 +37,14 @@ class Propiedad{
         self::$db= $database;
     }
     public function guardar(){
+        if (isset($this->id)) {
+           $this->updt();
+        }else{
+            $this->crear();
+        }
+    }
+    
+    public function crear(){
         //sanitizando datos
         $atributos= $this->sanitizarDatos();
 
@@ -62,6 +70,26 @@ class Propiedad{
         }
         return $atributos;
     }
+    public function updt(){
+       //sanitizando datos
+       $atributos= $this->sanitizarDatos();
+
+       $valores= [];
+
+       foreach($atributos as $key=>$val){
+           $valores[]="{$key}='{$val}'";
+       }
+       $query= "UPDATE propiedades SET ";
+       $query.=join(',',$valores);
+       $query.=" WHERE id ='".self::$db->escape_string($this->id)."'";
+       $query.=" LIMIT 1";
+      $resultado=self::$db->query($query);
+      
+    if ($resultado) {
+        //Se redirecciona al usuario
+         header('location: /bienes_raices/admin?msj=registadoCorrectamente&registrado=2');
+     }
+    }
    public function sanitizarDatos(){
     $atributos= $this->atributos();
     $sanitizado=[];
@@ -79,7 +107,7 @@ class Propiedad{
    //Subiendo imagenes con la libreria intervetion Image
    public function setImagen($imagen){
        //Eliminando imagen anterior
-       if ($this->id) {
+       if (isset($this->id)) {
            //Comprobar si existe el archivo
            $existeArch= file_exists(CARPETA_IMAGENES . $this->imagen);
            if ($existeArch) {

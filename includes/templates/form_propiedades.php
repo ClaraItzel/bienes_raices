@@ -28,13 +28,12 @@
             </fieldset>
             <fieldset>
                 <legend>Vendedor</legend>
-                <select name="propiedad[vendedorId]">
+                 <select name="propiedad[vendedorId]" id="vendedor"> 
                     <option  value="0" selected disabled> --- Selecciona un vendedor ---</option>
-                    <?php while($row= mysqli_fetch_assoc($resConsulta)): ?>
-                         <?php 
-                            $vendedor=s($propiedad->vendedorId);
-                         ?>
-                        <option  <?php echo $vendedor==$row['id']? 'selected' :''; ?> value="<?php echo $row['id'] ?>"><?php echo $row['nombre']." ".$row['apellidos'] ?></option>
-                    <?php endwhile ?>
+                    <?php foreach($vendedores as $vendedor):
+                        ?>
+                         
+                        <option  <?php echo $propiedad->vendedorId==$vendedor->id? 'selected' :''; ?> value="<?php echo s($vendedor->id) ?>"><?php echo s($vendedor->nombre)." ".s($vendedor->apellidos) ?></option>
+                    <?php endforeach; ?>
                 </select>
             </fieldset>

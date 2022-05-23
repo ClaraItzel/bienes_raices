@@ -1,14 +1,17 @@
 <?php 
 require '../../includes/app.php';
 use App\Propiedad;
+use App\Vendedor;
 use Intervention\Image\ImageManagerStatic as Imge;
 estaAutenticado();
 $db=conectarDB();
 //Creando una propiedad vacía
 $propiedad= new Propiedad;
-//consulta
-$consulta= "SELECT * FROM vendedores";
-$resConsulta= mysqli_query($db,$consulta);
+
+//Consulta para obtener vendedores
+$vendedores= Vendedor::all();
+
+
 
 //Arreglo con msj de error
 $errores=Propiedad::getErrores();
@@ -45,9 +48,7 @@ if (empty($errores)) {
    $imagen->save( CARPETA_IMAGENES .$nombreImagen);
        //GUarda en bd
   $resultado= $propiedad->guardar(); 
-  if ($resultado) {
-      header('Location:/bienes_raices/admin?registrado=1');
-  } 
+ 
 }
 
 

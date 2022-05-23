@@ -2,9 +2,11 @@
 require '../includes/app.php';
 estaAutenticado();
 use App\Propiedad;
+use App\Vendedor;
+
 //Implementando método para obtener propiedades
 $propiedades= Propiedad::all();
-
+$vendedor= Vendedor::all();
 
 //Muestra un mensaje condicional
 $msj= $_GET["registrado"] ?? null; //Busca este valor y si no lo encuentra le asigna null
@@ -14,21 +16,9 @@ if ($_SERVER['REQUEST_METHOD']=== 'POST') {
     $id= $_POST['id'];
     $id= filter_var($id,FILTER_VALIDATE_INT);
     if ($id) {
-
-          //Eliminando el archivo de la imagen
-          $query="SELECT imagen FROM propiedades where id= ${id}";
-          $resultado= mysqli_query($db,$query);
-          $propiedad= mysqli_fetch_assoc($resultado);
-          $carpertaImg='../imagenes/';
-          unlink($carpertaImg. $propiedad['imagen']);
-
-        //Elimina la propiedad de la db
-        $query= "DELETE FROM propiedades where id= ${id}";
-        $resultado= mysqli_query($db, $query);
-        if ($resultado) {
-            header('location: /bienes_raices/admin?registrado=3');
-        }
-      
+          $propiedad= Propiedad::find($id);
+          $propiedad->eliminar();
+        
         
     }
 }

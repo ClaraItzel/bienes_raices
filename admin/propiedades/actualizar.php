@@ -15,6 +15,8 @@ estaAutenticado();
 
 //Obteniendo propiedades
 $propiedad= Propiedad::find($id);
+//Consulta para obtener vendedores
+$vendedores= Vendedor::all();
 
 
 

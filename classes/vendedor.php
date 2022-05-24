@@ -3,7 +3,7 @@ namespace App;
 
 class Vendedor extends ActiveRecord{
     protected static $tabla="vendedores";
-    protected static $columnasdb= ['id, nombre, apellidos, telefono'];
+    protected static $columnasdb= ['id', 'nombre', 'apellidos', 'telefono'];
 
     public $id;
     public $nombre;
@@ -17,6 +17,7 @@ class Vendedor extends ActiveRecord{
         $this->apellidos = $args['apellidos'] ?? '';
         $this->telefono = $args['telefono'] ?? '';
     }
+    
 }
 
 ?>

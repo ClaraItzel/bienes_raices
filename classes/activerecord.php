@@ -5,6 +5,7 @@ class ActiveRecord{
     //Creando conexion a BD
     protected static $db;
     protected static $tabla="";
+    protected static $columnasdb= [];
     //Errores
     protected static $errores = [];
 
@@ -42,7 +43,7 @@ class ActiveRecord{
     //identifica las entradas de la bd
     public function atributos(){
         $atributos= [];
-        foreach(self::$columnasdb as $col){
+        foreach(static::$columnasdb as $col){
             if ($col=== 'id') continue;
                 $atributos[$col]= $this->$col;
             
@@ -92,7 +93,7 @@ class ActiveRecord{
 
    //Validacion
    public static function getErrores(){
-       return self::$errores;
+       return static::$errores;
    }
 
    //Subiendo imagenes con la libreria intervetion Image
@@ -115,34 +116,8 @@ class ActiveRecord{
      }
    }
    public function validar(){
-
-     
-    if(!$this->titulo){
-        self::$errores[]= "Debes añadir un titulo";
-    }
-    if (!$this->precio) {
-        self::$errores[]= 'El precio es obligatorio';
-    }
-    if ($this->vendedorId==0) {
-        self::$errores[]='Seleccione un vendedor';
-       }
-    if (strlen($this->descripcion) <50) {
-        self::$errores[]='La descripción es obligatoria y debe tener almenos 50 caracteres';
-    }
-    if (!$this->habitaciones) {
-        self::$errores[]='El numero de habitaciones es obligatorio';
-    }
-    if (!$this->wc) {
-        self::$errores[]='El numero de baños es obligatorio';
-    }
-    if (!$this->estacionamiento) {
-        self::$errores[]='El numero de lugares de estacionamiento es obligatorio';
-    }
-     if (!$this->imagen) {
-         self::$errores[]='La imagen es obligatoria';
-     }
-
-    return self::$errores;
+    static::$errores=[];
+    return static::$errores;
    }
    //listando propiedades
    public static function all(){
@@ -162,7 +137,7 @@ class ActiveRecord{
     //iterando
     $array=[];
     while($registro = $resultado->fetch_assoc()):
-        $array[]=self::crearObj($registro);
+        $array[]=static::crearObj($registro);
     endwhile;
     //liberar memoria
     $resultado->free();

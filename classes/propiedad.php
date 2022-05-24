@@ -3,7 +3,7 @@ namespace App;
 
 class Propiedad extends ActiveRecord{
     protected static $tabla="propiedades";
-    protected static $columnasdb= [''];
+    protected static $columnasdb= ['id', 'titulo', 'precio', 'imagen', 'descripcion','wc', 'habitaciones', 'estacionamiento', 'creado', 'vendedorId'];
 
     public $id;
     public $titulo;
@@ -29,5 +29,36 @@ class Propiedad extends ActiveRecord{
         $this->creado = date('Y/m/d');
         $this->vendedorId = $args['vendedorId'] ?? '';
     }
+    public function validar(){
+
+     
+        if(!$this->titulo){
+            self::$errores[]= "Debes añadir un titulo";
+        }
+        if (!$this->precio) {
+            self::$errores[]= 'El precio es obligatorio';
+        }
+        if ($this->vendedorId==0) {
+            self::$errores[]='Seleccione un vendedor';
+           }
+        if (strlen($this->descripcion) <50) {
+            self::$errores[]='La descripción es obligatoria y debe tener almenos 50 caracteres';
+        }
+        if (!$this->habitaciones) {
+            self::$errores[]='El numero de habitaciones es obligatorio';
+        }
+        if (!$this->wc) {
+            self::$errores[]='El numero de baños es obligatorio';
+        }
+        if (!$this->estacionamiento) {
+            self::$errores[]='El numero de lugares de estacionamiento es obligatorio';
+        }
+         if (!$this->imagen) {
+             self::$errores[]='La imagen es obligatoria';
+         }
+    
+        return self::$errores;
+       }
 }
+
 ?> 

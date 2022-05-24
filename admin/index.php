@@ -6,7 +6,7 @@ use App\Vendedor;
 
 //Implementando método para obtener propiedades
 $propiedades= Propiedad::all();
-$vendedor= Vendedor::all();
+$vendedores= Vendedor::all();
 
 //Muestra un mensaje condicional
 $msj= $_GET["registrado"] ?? null; //Busca este valor y si no lo encuentra le asigna null
